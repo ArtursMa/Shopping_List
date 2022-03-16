@@ -1,8 +1,8 @@
 package com.example.shoppinglist.domain
 
-class GetShopItem {
+class GetShopItem(private val repository: ShopItemRepository) {
     fun getShopItem( id:Int):ShopListItem{
-        TODO()
+       return repository.getItemById(id)
 
 
 

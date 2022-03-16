@@ -1,7 +1,8 @@
 package com.example.shoppinglist.domain
 
-class EditShopListItem {
+class EditShopListItem (private val repository: ShopItemRepository){
     fun editShopListItem(item:ShopListItem){
+        repository.editItem(item)
 
 
     }
