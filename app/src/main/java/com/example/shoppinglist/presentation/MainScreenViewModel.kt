@@ -1,22 +1,32 @@
 package com.example.shoppinglist.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.shoppinglist.domain.ShopItemRepository
-import com.example.shoppinglist.domain.ShopListItem
+import androidx.lifecycle.*
+import com.example.shoppinglist.domain.*
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 
 class MainScreenViewModel(val repository: ShopItemRepository):ViewModel() {
-    val allShopListItems:LiveData<List<ShopListItem>> = repository.getListOfItems() as LiveData<List<ShopListItem>>
+    val allShopListItems:LiveData<List<ShopListItem>> = (GetShopItemList(repository)
+        .getShopItemList()).asLiveData()
 
     fun deleteSHopLIstItem(item:ShopListItem) = viewModelScope.launch {
-        repository.deleteItem(item)
+        DeleteShopItem(repository).deleteShopItem(item)
     }
 
     fun editShopListItem(item:ShopListItem) = viewModelScope.launch {
-        repository.editItem(item)
+       EditShopListItem(repository).editShopListItem(item)
     }
+class MainScreenProviderFactory(private val repository: ShopItemRepository):ViewModelProvider.Factory{
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if(modelClass.isAssignableFrom(MainScreenViewModel::class.java)){
+            @Suppress("UNCHECKED_CAST")
+            return MainScreenViewModel(repository) as T
+
+        }
+        throw IllegalArgumentException("Unknown class view model")
+    }
+
+}
 
 
 }
