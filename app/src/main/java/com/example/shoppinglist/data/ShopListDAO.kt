@@ -9,7 +9,7 @@ interface ShopListDAO {
 @Query("SELECT * FROM shoplistitem")
 fun getAllShopItems():Flow<List<ShopListItem>>
 
-@Query("SELECT * FROM shoplistitem WHERE id == id")
+@Query("SELECT * FROM shoplistitem WHERE id =:id")
 fun getItemsById(id:Int):Flow<List<ShopListItem>>
 
 @Insert(onConflict = OnConflictStrategy.IGNORE)
